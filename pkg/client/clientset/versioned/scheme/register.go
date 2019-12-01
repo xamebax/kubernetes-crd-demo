@@ -3,7 +3,7 @@
 package scheme
 
 import (
-	ourcustomv1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/ourcustom.apigroup.io/v1"
+	gooslov1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/gooslo.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -15,7 +15,7 @@ var Scheme = runtime.NewScheme()
 var Codecs = serializer.NewCodecFactory(Scheme)
 var ParameterCodec = runtime.NewParameterCodec(Scheme)
 var localSchemeBuilder = runtime.SchemeBuilder{
-	ourcustomv1.AddToScheme,
+	gooslov1.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition

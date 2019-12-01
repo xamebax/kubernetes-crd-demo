@@ -5,10 +5,10 @@ package v1
 import (
 	time "time"
 
-	ourcustomapigroupiov1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/ourcustom.apigroup.io/v1"
+	goosloiov1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/gooslo.io/v1"
 	versioned "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned"
 	internalinterfaces "github.com/xamebax/kubernetes-crd-demo/pkg/client/informers/externalversions/internalinterfaces"
-	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/client/listers/ourcustom.apigroup.io/v1"
+	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/client/listers/gooslo.io/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
@@ -45,16 +45,16 @@ func NewFilteredApplicationInformer(client versioned.Interface, namespace string
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.OurcustomV1().Applications(namespace).List(options)
+				return client.GoosloV1().Applications(namespace).List(options)
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.OurcustomV1().Applications(namespace).Watch(options)
+				return client.GoosloV1().Applications(namespace).Watch(options)
 			},
 		},
-		&ourcustomapigroupiov1.Application{},
+		&goosloiov1.Application{},
 		resyncPeriod,
 		indexers,
 	)
@@ -65,7 +65,7 @@ func (f *applicationInformer) defaultInformer(client versioned.Interface, resync
 }
 
 func (f *applicationInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&ourcustomapigroupiov1.Application{}, f.defaultInformer)
+	return f.factory.InformerFor(&goosloiov1.Application{}, f.defaultInformer)
 }
 
 func (f *applicationInformer) Lister() v1.ApplicationLister {

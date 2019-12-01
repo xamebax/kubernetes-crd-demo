@@ -18,5 +18,5 @@ limitations under the License.
 // +genclient:nonNamespaced
 
 // Package v1 is the v1 version of the API.
-// +groupName=ourcustom.apigroup.io
+// +groupName=gooslo.io
 package v1

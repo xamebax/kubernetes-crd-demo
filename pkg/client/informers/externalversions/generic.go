@@ -5,7 +5,7 @@ package externalversions
 import (
 	"fmt"
 
-	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/ourcustom.apigroup.io/v1"
+	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/gooslo.io/v1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -36,9 +36,9 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=ourcustom.apigroup.io, Version=v1
+	// Group=gooslo.io, Version=v1
 	case v1.SchemeGroupVersion.WithResource("applications"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Ourcustom().V1().Applications().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Gooslo().V1().Applications().Informer()}, nil
 
 	}
 

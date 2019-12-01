@@ -5,7 +5,7 @@ package v1
 import (
 	"time"
 
-	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/ourcustom.apigroup.io/v1"
+	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/gooslo.io/v1"
 	scheme "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned/scheme"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
@@ -39,7 +39,7 @@ type applications struct {
 }
 
 // newApplications returns a Applications
-func newApplications(c *OurcustomV1Client, namespace string) *applications {
+func newApplications(c *GoosloV1Client, namespace string) *applications {
 	return &applications{
 		client: c.RESTClient(),
 		ns:     namespace,

@@ -3,22 +3,22 @@
 package fake
 
 import (
-	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned/typed/ourcustom.apigroup.io/v1"
+	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned/typed/gooslo.io/v1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeOurcustomV1 struct {
+type FakeGoosloV1 struct {
 	*testing.Fake
 }
 
-func (c *FakeOurcustomV1) Applications(namespace string) v1.ApplicationInterface {
+func (c *FakeGoosloV1) Applications(namespace string) v1.ApplicationInterface {
 	return &FakeApplications{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeOurcustomV1) RESTClient() rest.Interface {
+func (c *FakeGoosloV1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

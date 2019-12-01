@@ -15,7 +15,7 @@ export GO111MODULE=on
 ${CODEGEN_PACKAGE}/generate-groups.sh all \
   github.com/xamebax/kubernetes-crd-demo/pkg/client \
   github.com/xamebax/kubernetes-crd-demo/pkg/apis \
-  "ourcustom.apigroup.io:v1" \
+  "gooslo.io:v1" \
   --output-base ${TEMP_DIR} \
   --go-header-file ${SCRIPT_ROOT}/hack/boilerplate.go.txt
 

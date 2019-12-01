@@ -23,10 +23,13 @@ import (
 )
 
 // GroupName contains the api name
-const GroupName = "ourcustom.apigroup.io"
-
-// GroupVersion contains the api version
-const GroupVersion = "v1"
+const (
+	GroupName = "gooslo.io"
+	// GroupVersion contains the api version
+	GroupVersion                       = "v1"
+	CustomResourceDefinitionName       = "application"
+	CustomResourceDefinitionPluralName = "applications"
+)
 
 var SchemeGroupVersion = schema.GroupVersion{
 	Group:   GroupName,

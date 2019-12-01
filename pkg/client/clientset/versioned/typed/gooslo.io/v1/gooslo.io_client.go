@@ -3,27 +3,27 @@
 package v1
 
 import (
-	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/ourcustom.apigroup.io/v1"
+	v1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/gooslo.io/v1"
 	"github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
-type OurcustomV1Interface interface {
+type GoosloV1Interface interface {
 	RESTClient() rest.Interface
 	ApplicationsGetter
 }
 
-// OurcustomV1Client is used to interact with features provided by the ourcustom.apigroup.io group.
-type OurcustomV1Client struct {
+// GoosloV1Client is used to interact with features provided by the gooslo.io group.
+type GoosloV1Client struct {
 	restClient rest.Interface
 }
 
-func (c *OurcustomV1Client) Applications(namespace string) ApplicationInterface {
+func (c *GoosloV1Client) Applications(namespace string) ApplicationInterface {
 	return newApplications(c, namespace)
 }
 
-// NewForConfig creates a new OurcustomV1Client for the given config.
-func NewForConfig(c *rest.Config) (*OurcustomV1Client, error) {
+// NewForConfig creates a new GoosloV1Client for the given config.
+func NewForConfig(c *rest.Config) (*GoosloV1Client, error) {
 	config := *c
 	if err := setConfigDefaults(&config); err != nil {
 		return nil, err
@@ -32,12 +32,12 @@ func NewForConfig(c *rest.Config) (*OurcustomV1Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &OurcustomV1Client{client}, nil
+	return &GoosloV1Client{client}, nil
 }
 
-// NewForConfigOrDie creates a new OurcustomV1Client for the given config and
+// NewForConfigOrDie creates a new GoosloV1Client for the given config and
 // panics if there is an error in the config.
-func NewForConfigOrDie(c *rest.Config) *OurcustomV1Client {
+func NewForConfigOrDie(c *rest.Config) *GoosloV1Client {
 	client, err := NewForConfig(c)
 	if err != nil {
 		panic(err)
@@ -45,9 +45,9 @@ func NewForConfigOrDie(c *rest.Config) *OurcustomV1Client {
 	return client
 }
 
-// New creates a new OurcustomV1Client for the given RESTClient.
-func New(c rest.Interface) *OurcustomV1Client {
-	return &OurcustomV1Client{c}
+// New creates a new GoosloV1Client for the given RESTClient.
+func New(c rest.Interface) *GoosloV1Client {
+	return &GoosloV1Client{c}
 }
 
 func setConfigDefaults(config *rest.Config) error {
@@ -65,7 +65,7 @@ func setConfigDefaults(config *rest.Config) error {
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *OurcustomV1Client) RESTClient() rest.Interface {
+func (c *GoosloV1Client) RESTClient() rest.Interface {
 	if c == nil {
 		return nil
 	}

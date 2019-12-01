@@ -8,8 +8,8 @@ import (
 	time "time"
 
 	versioned "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned"
+	goosloio "github.com/xamebax/kubernetes-crd-demo/pkg/client/informers/externalversions/gooslo.io"
 	internalinterfaces "github.com/xamebax/kubernetes-crd-demo/pkg/client/informers/externalversions/internalinterfaces"
-	ourcustomapigroupio "github.com/xamebax/kubernetes-crd-demo/pkg/client/informers/externalversions/ourcustom.apigroup.io"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -156,9 +156,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Ourcustom() ourcustomapigroupio.Interface
+	Gooslo() goosloio.Interface
 }
 
-func (f *sharedInformerFactory) Ourcustom() ourcustomapigroupio.Interface {
-	return ourcustomapigroupio.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Gooslo() goosloio.Interface {
+	return goosloio.New(f, f.namespace, f.tweakListOptions)
 }

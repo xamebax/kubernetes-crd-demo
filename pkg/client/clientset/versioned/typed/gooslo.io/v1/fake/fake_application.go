@@ -3,7 +3,7 @@
 package fake
 
 import (
-	ourcustomapigroupiov1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/ourcustom.apigroup.io/v1"
+	goosloiov1 "github.com/xamebax/kubernetes-crd-demo/pkg/apis/gooslo.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -14,29 +14,29 @@ import (
 
 // FakeApplications implements ApplicationInterface
 type FakeApplications struct {
-	Fake *FakeOurcustomV1
+	Fake *FakeGoosloV1
 	ns   string
 }
 
-var applicationsResource = schema.GroupVersionResource{Group: "ourcustom.apigroup.io", Version: "v1", Resource: "applications"}
+var applicationsResource = schema.GroupVersionResource{Group: "gooslo.io", Version: "v1", Resource: "applications"}
 
-var applicationsKind = schema.GroupVersionKind{Group: "ourcustom.apigroup.io", Version: "v1", Kind: "Application"}
+var applicationsKind = schema.GroupVersionKind{Group: "gooslo.io", Version: "v1", Kind: "Application"}
 
 // Get takes name of the application, and returns the corresponding application object, and an error if there is any.
-func (c *FakeApplications) Get(name string, options v1.GetOptions) (result *ourcustomapigroupiov1.Application, err error) {
+func (c *FakeApplications) Get(name string, options v1.GetOptions) (result *goosloiov1.Application, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(applicationsResource, c.ns, name), &ourcustomapigroupiov1.Application{})
+		Invokes(testing.NewGetAction(applicationsResource, c.ns, name), &goosloiov1.Application{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*ourcustomapigroupiov1.Application), err
+	return obj.(*goosloiov1.Application), err
 }
 
 // List takes label and field selectors, and returns the list of Applications that match those selectors.
-func (c *FakeApplications) List(opts v1.ListOptions) (result *ourcustomapigroupiov1.ApplicationList, err error) {
+func (c *FakeApplications) List(opts v1.ListOptions) (result *goosloiov1.ApplicationList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(applicationsResource, applicationsKind, c.ns, opts), &ourcustomapigroupiov1.ApplicationList{})
+		Invokes(testing.NewListAction(applicationsResource, applicationsKind, c.ns, opts), &goosloiov1.ApplicationList{})
 
 	if obj == nil {
 		return nil, err
@@ -46,8 +46,8 @@ func (c *FakeApplications) List(opts v1.ListOptions) (result *ourcustomapigroupi
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &ourcustomapigroupiov1.ApplicationList{ListMeta: obj.(*ourcustomapigroupiov1.ApplicationList).ListMeta}
-	for _, item := range obj.(*ourcustomapigroupiov1.ApplicationList).Items {
+	list := &goosloiov1.ApplicationList{ListMeta: obj.(*goosloiov1.ApplicationList).ListMeta}
+	for _, item := range obj.(*goosloiov1.ApplicationList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -63,31 +63,31 @@ func (c *FakeApplications) Watch(opts v1.ListOptions) (watch.Interface, error) {
 }
 
 // Create takes the representation of a application and creates it.  Returns the server's representation of the application, and an error, if there is any.
-func (c *FakeApplications) Create(application *ourcustomapigroupiov1.Application) (result *ourcustomapigroupiov1.Application, err error) {
+func (c *FakeApplications) Create(application *goosloiov1.Application) (result *goosloiov1.Application, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(applicationsResource, c.ns, application), &ourcustomapigroupiov1.Application{})
+		Invokes(testing.NewCreateAction(applicationsResource, c.ns, application), &goosloiov1.Application{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*ourcustomapigroupiov1.Application), err
+	return obj.(*goosloiov1.Application), err
 }
 
 // Update takes the representation of a application and updates it. Returns the server's representation of the application, and an error, if there is any.
-func (c *FakeApplications) Update(application *ourcustomapigroupiov1.Application) (result *ourcustomapigroupiov1.Application, err error) {
+func (c *FakeApplications) Update(application *goosloiov1.Application) (result *goosloiov1.Application, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(applicationsResource, c.ns, application), &ourcustomapigroupiov1.Application{})
+		Invokes(testing.NewUpdateAction(applicationsResource, c.ns, application), &goosloiov1.Application{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*ourcustomapigroupiov1.Application), err
+	return obj.(*goosloiov1.Application), err
 }
 
 // Delete takes name of the application and deletes it. Returns an error if one occurs.
 func (c *FakeApplications) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(applicationsResource, c.ns, name), &ourcustomapigroupiov1.Application{})
+		Invokes(testing.NewDeleteAction(applicationsResource, c.ns, name), &goosloiov1.Application{})
 
 	return err
 }
@@ -96,17 +96,17 @@ func (c *FakeApplications) Delete(name string, options *v1.DeleteOptions) error 
 func (c *FakeApplications) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(applicationsResource, c.ns, listOptions)
 
-	_, err := c.Fake.Invokes(action, &ourcustomapigroupiov1.ApplicationList{})
+	_, err := c.Fake.Invokes(action, &goosloiov1.ApplicationList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched application.
-func (c *FakeApplications) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *ourcustomapigroupiov1.Application, err error) {
+func (c *FakeApplications) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *goosloiov1.Application, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(applicationsResource, c.ns, name, pt, data, subresources...), &ourcustomapigroupiov1.Application{})
+		Invokes(testing.NewPatchSubresourceAction(applicationsResource, c.ns, name, pt, data, subresources...), &goosloiov1.Application{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*ourcustomapigroupiov1.Application), err
+	return obj.(*goosloiov1.Application), err
 }

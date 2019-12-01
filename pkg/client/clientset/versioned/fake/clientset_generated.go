@@ -4,8 +4,8 @@ package fake
 
 import (
 	clientset "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned"
-	ourcustomv1 "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned/typed/ourcustom.apigroup.io/v1"
-	fakeourcustomv1 "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned/typed/ourcustom.apigroup.io/v1/fake"
+	gooslov1 "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned/typed/gooslo.io/v1"
+	fakegooslov1 "github.com/xamebax/kubernetes-crd-demo/pkg/client/clientset/versioned/typed/gooslo.io/v1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -60,7 +60,7 @@ func (c *Clientset) Tracker() testing.ObjectTracker {
 
 var _ clientset.Interface = &Clientset{}
 
-// OurcustomV1 retrieves the OurcustomV1Client
-func (c *Clientset) OurcustomV1() ourcustomv1.OurcustomV1Interface {
-	return &fakeourcustomv1.FakeOurcustomV1{Fake: &c.Fake}
+// GoosloV1 retrieves the GoosloV1Client
+func (c *Clientset) GoosloV1() gooslov1.GoosloV1Interface {
+	return &fakegooslov1.FakeGoosloV1{Fake: &c.Fake}
 }
