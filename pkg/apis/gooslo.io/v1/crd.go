@@ -16,29 +16,10 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 )
 
-func createCRDSchema(clientset apiextensionsclientset.Interface) *apiextensionsv1beta1.CustomResourceDefinition {
-	crdSchema := &apiextensionsv1beta1.CustomResourceDefinition{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      CustomResourceDefinitionName,
-			Namespace: "default",
-		},
-		Spec: apiextensionsv1beta1.CustomResourceDefinitionSpec{
-			Group:   GroupName,
-			Version: SchemeGroupVersion.Version,
-			Scope:   apiextensionsv1beta1.NamespaceScoped,
-			Names: apiextensionsv1beta1.CustomResourceDefinitionNames{
-				Plural: PluralName,
-				Kind:   reflect.TypeOf(Application{}).Name(),
-			},
-		},
-	}
-	return crdSchema
-}
-
+// PollPeriod defines how often we poll to check if CRD is there
+// PollTimeout defines after how much time we'll stop waiting to check if CRD was created
 const (
-	// PollPeriod defines how often we poll to check if CRD is there
-	PollPeriod = 5 * time.Second
-	// PollTimeout defines after how much time we'll stop waiting to check if CRD was created
+	PollPeriod  = 5 * time.Second
 	PollTimeout = 30 * time.Second
 )
 
@@ -86,4 +67,23 @@ func CreateCRD(clientset apiextensionsclientset.Interface) (*apiextensionsv1beta
 	}
 
 	return crdSchema, nil
+}
+
+func createCRDSchema(clientset apiextensionsclientset.Interface) *apiextensionsv1beta1.CustomResourceDefinition {
+	crdSchema := &apiextensionsv1beta1.CustomResourceDefinition{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      CustomResourceDefinitionName,
+			Namespace: "default",
+		},
+		Spec: apiextensionsv1beta1.CustomResourceDefinitionSpec{
+			Group:   GroupName,
+			Version: SchemeGroupVersion.Version,
+			Scope:   apiextensionsv1beta1.NamespaceScoped,
+			Names: apiextensionsv1beta1.CustomResourceDefinitionNames{
+				Plural: PluralName,
+				Kind:   reflect.TypeOf(Application{}).Name(),
+			},
+		},
+	}
+	return crdSchema
 }
