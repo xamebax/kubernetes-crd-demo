@@ -1,0 +1,8 @@
+---
+apiVersion: gooslo.io/v1
+kind: Application
+metadata:
+ name: application-b
+spec:
+  name: application-b
+  image: dockerhub.com/my/other/image/is/here:latest
