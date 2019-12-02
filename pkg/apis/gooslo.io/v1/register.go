@@ -1,18 +1,6 @@
-/*
-Copyright 2017-2019 The FIAAS Authors
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+// Most of this is boilerplate code. The important parts are:
+// - constants that define naming
+// - addKnownTypes() function.
 
 package v1
 
@@ -23,12 +11,14 @@ import (
 )
 
 // GroupName contains the api name
+// GroupVersion contains the api version
 const (
-	GroupName = "gooslo.io"
-	// GroupVersion contains the api version
-	GroupVersion                       = "v1"
-	CustomResourceDefinitionName       = "application"
-	CustomResourceDefinitionPluralName = "applications"
+	GroupName                    = "gooslo.io"
+	Kind                         = "application"
+	GroupVersion                 = "v1"
+	SingularName                 = "application"
+	PluralName                   = "applications"
+	CustomResourceDefinitionName = PluralName + "." + GroupName
 )
 
 var SchemeGroupVersion = schema.GroupVersion{
@@ -36,12 +26,12 @@ var SchemeGroupVersion = schema.GroupVersion{
 	Version: GroupVersion,
 }
 
+// localSchemeBuilder will stay in k8s.io/kubernetes.
+// AddToScheme will stay in k8s.io/kubernetes.
 var (
-	// localSchemeBuilder will stay in k8s.io/kubernetes.
 	localSchemeBuilder = &SchemeBuilder
-	// AddToScheme will stay in k8s.io/kubernetes.
-	AddToScheme   = localSchemeBuilder.AddToScheme
-	SchemeBuilder runtime.SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
+	SchemeBuilder      runtime.SchemeBuilder
 )
 
 func init() {
