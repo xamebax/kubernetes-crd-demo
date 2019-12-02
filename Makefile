@@ -1,5 +1,7 @@
 .PHONY: e2e
 
+NAME := kubernetes-crd-demo
+
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 generate-code:
@@ -7,3 +9,6 @@ generate-code:
 
 verify:
 	${ROOT_DIR}/hack/verify-codegen.sh
+
+local:
+	go run cmd/${NAME}/main.go -kubeconfig=${KUBECONFIG}
