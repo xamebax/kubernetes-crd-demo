@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 
 	log "github.com/sirupsen/logrus"
@@ -80,7 +79,8 @@ func main() {
 
 		// This is where we handle each object. In this demo, we just print the event,
 		// but there's plenty of possibilities.
-		fmt.Printf("Received event [%v] for application [%v]", event, application.Name)
+		log.Printf("Received event [%v] for application [%s]. It's using the [%v] image",
+			event, application.Name, application.Spec.Image)
 	}
 }
 
