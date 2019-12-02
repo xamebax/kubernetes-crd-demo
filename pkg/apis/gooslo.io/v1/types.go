@@ -17,9 +17,6 @@ limitations under the License.
 package v1
 
 import (
-	"bytes"
-	"encoding/gob"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -37,25 +34,8 @@ type Application struct {
 // ApplicationSpec contains data used to create a CRD.
 // Note: using an anonymous interface{} type for Config results in badly generated code
 type ApplicationSpec struct {
-	Application string `json:"application"`
-	Image       string `json:"image"`
-	Config      Config `json:"config"`
-}
-
-// Config stores application specification
-// Reference: https://github.com/kubernetes/code-generator/issues/50
-type Config map[string]interface{}
-
-// DeepCopyInto is necessary to be able to use a map with an anonymous interface as type for Config
-// kudos to https://gist.github.com/soroushjp/0ec92102641ddfc3ad5515ca76405f4d
-func (in *Config) DeepCopyInto(out *Config) {
-	var buf bytes.Buffer
-	enc := gob.NewEncoder(&buf)
-	dec := gob.NewDecoder(&buf)
-	enc.Encode(in)
-
-	dec.Decode(&out)
-
+	Name  string `json:"name"`
+	Image string `json:"image"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
