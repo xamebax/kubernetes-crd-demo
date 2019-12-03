@@ -5,6 +5,7 @@
 package v1
 
 import (
+	"fmt"
 	"reflect"
 	"time"
 
@@ -29,48 +30,51 @@ func CreateCRD(clientset apiextensionsclientset.Interface) (*apiextensionsv1beta
 
 	crdSchema := createCRDSchema(clientset)
 
-	_, err := clientset.ApiextensionsV1beta1().CustomResourceDefinitions().Create(crdSchema)
+	_, err := clientset.ApiextensionsV1beta1().CustomResourceDefinitions().Create(&crdSchema)
 	switch {
 	case err == nil:
-		log.Infof("creating %s CRD…", crdSchema.Name)
+		log.Infof("creating [%s] CRD…", crdSchema.Name)
 	case apierrors.IsAlreadyExists(err):
-		log.Infof("CRD %s already exists, not creating", crdSchema.Name)
+		log.Infof("CRD [%s] already exists, not creating", crdSchema.Name)
+		return nil, nil
 	default:
 		return nil, err
 	}
 
 	err = wait.Poll(PollPeriod, PollTimeout, func() (bool, error) {
-		crd, err := clientset.ApiextensionsV1beta1().CustomResourceDefinitions().Get(CustomResourceDefinitionName, metav1.GetOptions{})
-		if err != nil {
-			log.Errorf("error when trying to wait for CRD creation: %s", err)
-			return false, err
-		}
-
-		for _, condition := range crd.Status.Conditions {
-			switch condition.Type {
-			case apiextensionsv1beta1.Established:
-				if condition.Status == apiextensionsv1beta1.ConditionTrue {
-					return true, nil
-				}
-			case apiextensionsv1beta1.NamesAccepted:
-				if condition.Status == apiextensionsv1beta1.ConditionFalse {
-					return false, nil
-				}
-			}
-		}
-		return false, err
+		return waitForComplete(clientset)
 	})
 
 	if err != nil {
-		log.Error(err)
 		return nil, err
 	}
 
-	return crdSchema, nil
+	return &crdSchema, nil
 }
 
-func createCRDSchema(clientset apiextensionsclientset.Interface) *apiextensionsv1beta1.CustomResourceDefinition {
-	crdSchema := &apiextensionsv1beta1.CustomResourceDefinition{
+func waitForComplete(clientset apiextensionsclientset.Interface) (bool, error) {
+	crd, err := clientset.ApiextensionsV1beta1().CustomResourceDefinitions().Get(CustomResourceDefinitionName, metav1.GetOptions{})
+	if err != nil {
+		return false, fmt.Errorf("error when trying to wait for CRD creation: %s", err)
+	}
+
+	for _, condition := range crd.Status.Conditions {
+		switch condition.Type {
+		case apiextensionsv1beta1.Established:
+			if condition.Status == apiextensionsv1beta1.ConditionTrue {
+				return true, nil
+			}
+		case apiextensionsv1beta1.NamesAccepted:
+			if condition.Status == apiextensionsv1beta1.ConditionFalse {
+				return false, nil
+			}
+		}
+	}
+	return false, err
+}
+
+func createCRDSchema(clientset apiextensionsclientset.Interface) apiextensionsv1beta1.CustomResourceDefinition {
+	return apiextensionsv1beta1.CustomResourceDefinition{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      CustomResourceDefinitionName,
 			Namespace: "default",
@@ -85,5 +89,4 @@ func createCRDSchema(clientset apiextensionsclientset.Interface) *apiextensionsv
 			},
 		},
 	}
-	return crdSchema
 }
