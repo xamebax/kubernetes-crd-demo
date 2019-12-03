@@ -1,5 +1,3 @@
-.PHONY: e2e
-
 NAME := kubernetes-crd-demo
 
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
