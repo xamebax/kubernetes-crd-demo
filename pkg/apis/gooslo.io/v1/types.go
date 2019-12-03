@@ -15,8 +15,7 @@ type Application struct {
 	Spec              ApplicationSpec `json:"spec"`
 }
 
-// ApplicationSpec contains data used to create a CRD.
-// Note: using an anonymous interface{} type for Config results in badly generated code
+// ApplicationSpec defines the CRD spec.
 type ApplicationSpec struct {
 	Name  string `json:"name"`
 	Image string `json:"image"`

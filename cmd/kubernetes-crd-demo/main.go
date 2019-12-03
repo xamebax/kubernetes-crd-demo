@@ -19,12 +19,11 @@ import (
 // a client connection and watch resources.
 type ApplicationClient struct {
 	// Clientset is necessary if we want to operate on built-in Kubernetes resources.
-	Clientset kubernetes.Interface
 	// APIExtensionsClientset is necessary to register a new CRD kind.
+	// ApplicationClientset is a clientset used to make operations specific to this CRD's API Group.
+	Clientset              kubernetes.Interface
 	APIExtensionsClientset apiextensionsclientset.Interface
-	// ApplicationClientset is a clientset used to make
-	// operations specific to this CRD's API Group.
-	ApplicationClientset clientset.Interface
+	ApplicationClientset   clientset.Interface
 }
 
 var kubeconfig string
@@ -65,11 +64,14 @@ func main() {
 	// This endless for loop is what we need to go through events related to the
 	// watched CRD (Application). The applicationWatcher has a result channel which
 	// receives all events. If an error occurs, this channel will be closed. If there
-	// is no new activity, the channel will eventually close, too.
+	// is no new activity, the channel will eventually time out and close, too.
 	for {
 		event := <-applicationWatcher.ResultChan()
 		// We break if event.Object is nil because otherwise we face a panic:
-		// `interface conversion: runtime.Object is nil, not *v1.Application`
+		// `interface conversion: runtime.Object is nil, not *v1.Application`.
+		// break means the program eventually exit when there are no new events.
+		// Using `continue` won't work here because the watch connection times out
+		// quietly, and new events won't be registered or handled.
 		if event.Object == nil {
 			break
 		}
@@ -80,7 +82,7 @@ func main() {
 		// This is where we handle each object. In this demo, we just print the event,
 		// but there's plenty of possibilities.
 		log.Printf("Received event [%v] for application [%s]. It's using the [%v] image",
-			event, application.Name, application.Spec.Image)
+			event.Type, application.Name, application.Spec.Image)
 	}
 }
 
@@ -88,7 +90,7 @@ func main() {
 func createApplicationClientset(cfg *rest.Config) *clientset.Clientset {
 	clientset, err := clientset.NewForConfig(cfg)
 	if err != nil {
-		log.Panic("unable to create new clientset")
+		log.Panicf("unable to create new clientset: %s", err)
 	}
 
 	return clientset
@@ -99,7 +101,7 @@ func createApplicationClientset(cfg *rest.Config) *clientset.Clientset {
 func createAPIExtensionsClientset(cfg *rest.Config) *apiextensionsclientset.Clientset {
 	clientset, err := apiextensionsclientset.NewForConfig(cfg)
 	if err != nil {
-		panic(err.Error())
+		log.Panicf("unable to create new clientset: %s", err)
 	}
 
 	return clientset
@@ -110,7 +112,7 @@ func createAPIExtensionsClientset(cfg *rest.Config) *apiextensionsclientset.Clie
 func createGenericClientset(cfg *rest.Config) *kubernetes.Clientset {
 	clientset, err := kubernetes.NewForConfig(cfg)
 	if err != nil {
-		panic(err.Error())
+		log.Panicf("unable to create new clientset: %s", err)
 	}
 
 	return clientset
