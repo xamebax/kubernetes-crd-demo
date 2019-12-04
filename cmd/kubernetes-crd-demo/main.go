@@ -56,12 +56,16 @@ func main() {
 
 	// We instantiate a watcher using generated code.
 	// Note: "default" is the namespace.
-	applicationWatcher, err := applicationClient.ApplicationClientset.GoosloV1().Applications("default").Watch(metav1.ListOptions{})
+	applicationWatcher, err := applicationClient.
+		ApplicationClientset.
+		GoosloV1().
+		Applications("default").
+		Watch(metav1.ListOptions{})
 	if err != nil {
 		log.Panicf("cannot create watcher: %v", err)
 	}
 
-	// This endless for loop is what we need to go through events related to the
+	// This infinite loop is what we need to go through events related to the
 	// watched CRD (Application). The applicationWatcher has a result channel which
 	// receives all events. If an error occurs, this channel will be closed. If there
 	// is no new activity, the channel will eventually time out and close, too.
